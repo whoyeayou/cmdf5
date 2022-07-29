@@ -1,0 +1,38 @@
+/*Circe Bold*/
+@font-face {
+	font-family: 'Circe';
+    font-weight: bold;
+	font-style: normal;
+	src: url('assets/fonts/CirceBold/Circe-Bold.eot');
+	src: local('Circe Bold'), local('Circe-Bold'),
+		url('assets/fonts/CirceBold/Circe-Bold.eot?#iefix') format('embedded-opentype'),
+		url('assets/fonts/CirceBold/Circe-Bold.woff') format('woff'),
+		url('assets/fonts/CirceBold/Circe-Bold.ttf') format('truetype');
+	
+}
+
+/*Circe Regular*/
+@font-face {
+	font-family: 'Circe';
+    font-weight: normal;
+	font-style: normal;
+	src: url('assets/fonts/CirceRegular');
+	src: local('Circe'), local('Circe-Regular'),
+		url('assets/fonts/CirceRegular/Circe-Regular.eot?#iefix') format('embedded-opentype'),
+		url('assets/fonts/CirceRegular/Circe-Regular.woff') format('woff'),
+		url('assets/fonts/CirceRegular/Circe-Regular.ttf') format('truetype');
+
+}
+
+/*Circe Light*/
+@font-face {
+	font-family: 'Circe';
+    font-weight: 300;
+	font-style: normal;
+	src: url('assets/fonts/CirceLight/Circe-Light.eot');
+	src: local('Circe Light'), local('Circe-Light'),
+		url('assets/fonts/CirceLight/Circe-Light.eot?#iefix') format('embedded-opentype'),
+		url('assets/fonts/CirceLight/Circe-Light.woff') format('woff'),
+		url('assets/fonts/CirceLight/Circe-Light.ttf') format('truetype');
+	
+}
