@@ -1,0 +1,224 @@
+body {
+    margin: 0;
+    font-family: 'Circe';
+    font-size: 16px;
+    line-height: 100%;
+    color: #231F20;
+}
+
+*
+*:after
+*:before {
+    box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+/*container*/
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+/*Header*/
+.header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 0 16px 0;
+    z-index: 1000;
+    display: flex;
+    margin: 0;
+    align-items: center;
+    
+    background-color: #231F20;
+    backdrop-filter: blur(3px);
+   
+}
+.header_inner {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+/*Navigation*/
+.nav {
+    font-size: 16px;
+    font-weight: 300;
+    align-items: center;
+    display: flex;
+}
+.nav_link {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 15px;
+    position: relative;
+    text-decoration: none;
+    color: #fff;
+    transition: color .2s linear;
+}
+.nav_link::after{
+    content: "";
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: #19D183;
+    margin-top: 2px;
+
+    opacity: 0;
+    transition: .2s linear;
+
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1;
+}
+.nav_link:hover {
+    color: #19D183;
+}
+.nav_link:hover::after {
+    opacity: 1;
+}
+.contacts {
+    display: flex;
+}
+
+
+/*Social icons*/
+.social_icons {
+    align-items: center;
+    flex-direction: row;
+    display: flex;
+    padding: 0 15px;
+}
+a svg {
+    margin: 5px;
+}
+a svg:hover #bg {
+    fill: #555
+}
+
+
+/*Phone*/
+.phone {
+    font-size: 14px;
+    vertical-align: middle;
+    margin: 0 15px;
+    position: relative;
+    text-decoration: none;
+    color: #fff;
+    align-items: center;
+    display: flex;
+    transition: .2s linear;
+}
+.phone:hover {
+    color: #19D183;
+}
+
+
+/*Intro*/
+.intro {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    background: url(../images/bg.png) center, no-repeat;
+    background-size: cover;
+}
+.intro_inner {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 110px;
+}
+.intro_title {
+    font-size: 64px;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    text-transform: uppercase;
+    line-height: 140%;
+}
+.intro_subtitle {
+    font-size: 20px;
+    font-weight: 300;
+    color: #fff;
+    margin: 0 0 40px 0;
+    text-align: center;
+    line-height: 140%;
+}
+
+
+/*Button Block*/
+.button_block {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/*Button*/
+.button_default {
+    font-family: "Circe";
+    font-size: 16px;
+    font-weight: 300;
+    color: #fff;
+    text-decoration: none;
+    background: rgba(25, 209, 131, 0.8);
+    backdrop-filter: blur(3px);
+    transition: .1s ease-out;
+
+    border: 0;
+    padding: 16px 76px;
+    border-radius: 50px;
+    margin: 5px;
+}
+.button_default:hover {
+    background: rgba(25, 209, 131);
+    box-shadow: 0px 100px 80px rgba(25, 209, 131, 0.3), 0px 41.7776px 33.4221px rgba(25, 209, 131, 0.215656), 0px 22.3363px 17.869px rgba(25, 209, 131, 0.178832), 0px 12.5216px 10.0172px rgba(25, 209, 131, 0.15), 0px 6.6501px 5.32008px rgba(25, 209, 131, 0.121168), 0px 2.76726px 2.21381px rgba(25, 209, 131, 0.0843437);
+}
+
+.button_bordered {
+    font-family: "Circe";
+    font-size: 14px;
+    font-weight: 300;
+    color: #fff;
+    text-decoration: none;
+    background: rgba(25, 209, 131, 0.2);
+    backdrop-filter: blur(3px);
+    transition: .1s ease-out;
+
+    border: 2px solid rgba(25, 209, 131);
+    padding: 12px 48px;
+    border-radius: 50px;
+    margin: 5px;
+}
+.button_bordered:hover {
+    background: rgba(25, 209, 131, 0.6);
+    box-shadow: 0px 100px 80px rgba(25, 209, 131, 0.3), 0px 41.7776px 33.4221px rgba(25, 209, 131, 0.215656), 0px 22.3363px 17.869px rgba(25, 209, 131, 0.178832), 0px 12.5216px 10.0172px rgba(25, 209, 131, 0.15), 0px 6.6501px 5.32008px rgba(25, 209, 131, 0.121168), 0px 2.76726px 2.21381px rgba(25, 209, 131, 0.0843437);
+}
+
+
+/*Description*/
+.description {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    color: #fff;
+    height: 800px;
+}
