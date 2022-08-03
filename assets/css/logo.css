@@ -1,0 +1,59 @@
+#logo {
+
+    background: url('../images/logo.png') center center no-repeat transparent;
+    background-image: url('../images/logo.svg'), -khtml-linear-gradient(transparent, transparent);
+    background-image: url('../images/logo.svg'), -webkit-linear-gradient(transparent, transparent);
+    background-image: url('../images/logo.svg'), url('../images/logo.png');
+    background-image: url('../images/logo.svg'), -ms-linear-gradient(transparent, transparent);
+    background-image: url('../images/logo.svg'), linear-gradient(transparent, transparent);
+    background-image: url('../images/logo.svg'), -o-linear-gradient(transparent, transparent);
+    background-repeat: no-repeat, no-repeat;
+    -moz-background-size: 0 0, 100% 100%; /* FF3.6 */
+    background-size: 100% 100%, 0 0;
+
+    /* Настройки */
+    overflow: hidden;
+    text-indent: -9999px;
+    font-size: 0;
+    color: rgba(255,255,255,0);
+
+    display: block;
+    height: 24px;
+    width: 114px;
+}
+
+@media (max-width: 992px) {
+    
+    /*Logo*/
+    #logo {
+        
+    }
+}
+
+@media (max-width: 768px) {
+     
+    /*Logo*/
+     #logo {
+        height: 20px;
+        width: 94.5px;
+    }
+}
+
+@media (max-width: 480px) {
+     /*Logo*/
+     #logo {
+        height: 16px;
+        width: 75.6px;
+    }   
+}
+
+/*Custom, Iphone*/
+@media (max-width: 320px) {
+    
+     /*Logo*/
+     #logo {
+        height: 14px;
+        width: 66.15px;
+    } 
+    
+}
