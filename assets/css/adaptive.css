@@ -97,7 +97,7 @@
 /* Intro */
 
     .intro {
-        background-attachment: scroll;
+        background-attachment: fixed;
     }
 
     .intro_subtitle {
