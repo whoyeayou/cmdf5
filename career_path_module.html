@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Карьерная дорожка — интерактивный модуль</title>
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--accent:#6ee7b7;--muted:#9aa8b2;--glass:rgba(255,255,255,0.03);--glass-2:rgba(255,255,255,0.04)}
+    *{box-sizing:border-box}html,body{height:100%;margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:#e6f0f2;background:linear-gradient(180deg,#071129 0%, #081826 60%);}
+    .wrap{max-width:1100px;margin:32px auto;padding:24px;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);box-shadow:0 8px 30px rgba(2,6,23,0.6);} 
+    header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#0ea5a8,#7c3aed);display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+    h1{font-size:20px;margin:0}
+    p.lead{margin:0;color:var(--muted);font-size:13px}
+
+    .layout{display:grid;grid-template-columns:1fr 360px;gap:22px;margin-top:20px}
+
+    /* timeline */
+    .timeline{background:linear-gradient(180deg,rgba(255,255,255,0.015),transparent);padding:18px;border-radius:12px}
+    .steps{display:flex;flex-direction:column;gap:18px;padding:8px}
+    .step{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center;padding:12px;border-radius:10px;background:var(--glass);cursor:pointer;transition:transform .18s ease,box-shadow .18s;}
+    .step:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(2,6,23,0.45)}
+    .step.active{background:linear-gradient(90deg,rgba(110,231,183,0.06),rgba(124,58,237,0.03));outline:1px solid rgba(110,231,183,0.12)}
+    .avatar{width:56px;height:56px;border-radius:8px;background:linear-gradient(135deg,#2563eb,#7c3aed);display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+    .meta{display:flex;flex-direction:column}
+    .title{font-weight:600}
+    .subtitle{font-size:13px;color:var(--muted)}
+    .badge{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.03);font-size:13px;color:var(--muted)}
+
+    /* detail panel */
+    .panel{background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);padding:18px;border-radius:12px;height:100%;display:flex;flex-direction:column}
+    .panel h2{margin:0 0 8px 0}
+    .panel .desc{color:var(--muted);margin-bottom:12px}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+    .chip{padding:6px 10px;border-radius:999px;background:var(--glass-2);font-size:13px}
+    .criteria{margin-top:8px}
+    .criteria li{margin-bottom:8px}
+
+    .progress-wrap{margin-top:14px}
+    .progress{height:12px;background:rgba(255,255,255,0.04);border-radius:999px;overflow:hidden}
+    .bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),#7c3aed);transition:width .6s cubic-bezier(.2,.9,.2,1)}
+
+    .actions{display:flex;gap:10px;margin-top:14px}
+    .btn{padding:10px 12px;border-radius:10px;border:0;background:linear-gradient(90deg,#0ea5a8,#7c3aed);color:#04111a;font-weight:700;cursor:pointer}
+    .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+
+    /* small responsive */
+    @media (max-width:980px){.layout{grid-template-columns:1fr;}.panel{order:2}}
+
+    /* modal */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(2,6,23,0.6),rgba(2,6,23,0.8));z-index:60}
+    .modal.open{display:flex}
+    .modal-card{width:680px;max-width:95%;background:#061024;padding:18px;border-radius:12px;box-shadow:0 20px 60px rgba(2,6,23,0.6)}
+    .close{background:transparent;border:0;color:var(--muted);font-weight:700;padding:6px 8px;border-radius:8px;cursor:pointer}
+
+    /* subtle timeline line */
+    .line{position:relative;margin-left:28px;margin-top:6px}
+    .dot{position:absolute;left:-34px;top:0;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.07)}
+
+    footer{margin-top:16px;color:var(--muted);font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="wrap" role="application" aria-label="Модуль Карьерная дорожка">
+    <header>
+      <div class="logo">KD</div>
+      <div>
+        <h1>Карьерная дорожка</h1>
+        <p class="lead">Наглядная карта должностей, обязанностей и условий перехода на следующую ступень.</p>
+      </div>
+    </header>
+
+    <div class="layout">
+      <section class="timeline" aria-labelledby="timeline-title">
+        <h3 id="timeline-title" style="margin:0 0 8px 0">Позиции</h3>
+        <div class="steps" id="steps"></div>
+        <div class="line" aria-hidden="true"><div class="dot"></div></div>
+      </section>
+
+      <aside class="panel" aria-labelledby="detail-title">
+        <h2 id="detail-title">Выберите позицию</h2>
+        <div class="desc">Здесь отображаются обязанности и четкие условия для перехода на следующую ступень.</div>
+
+        <div id="detail-content" aria-live="polite">
+          <div class="chips" id="tags"></div>
+          <div style="display:flex;gap:12px;align-items:center;justify-content:space-between">
+            <div>
+              <div style="font-weight:700" id="position-name">—</div>
+              <div class="subtitle" id="position-level">—</div>
+            </div>
+            <div class="badge" id="position-status">Статус</div>
+          </div>
+
+          <div style="margin-top:12px">
+            <strong>Обязанности</strong>
+            <ul id="responsibilities"></ul>
+          </div>
+
+          <div style="margin-top:8px">
+            <strong>Условия перехода</strong>
+            <ul id="criteria" class="criteria"></ul>
+          </div>
+
+          <div class="progress-wrap">
+            <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted)">
+              <div>Прогресс до следующей ступени</div>
+              <div id="progress-percent">0%</div>
+            </div>
+            <div class="progress"><div class="bar" id="progress-bar"></div></div>
+          </div>
+
+          <div class="actions">
+            <button class="btn" id="simulate">Смоделировать развитие</button>
+            <button class="btn secondary" id="open-modal">Просмотреть полный план</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer>Подсказка: нажмите на любую ступень слева, чтобы увидеть детали и условия.</footer>
+  </div>
+
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Полный план карьерной дорожки">
+    <div class="modal-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <strong>Полный план карьерной дорожки</strong>
+        <button class="close" id="close-modal">✕</button>
+      </div>
+      <div id="modal-body" style="max-height:60vh;overflow:auto"></div>
+    </div>
+  </div>
+
+  <script>
+    // Данные — замените на реальные из вашей компании
+    const positions = [
+      {
+        id: 'junior', title: 'Junior Developer', level: 'Начальная', tags: ['Работа в команде','Код-ревью'],
+        responsibilities: ['Выполняет задачи под руководством', 'Пишет тесты', 'Исправляет баги'],
+        criteria: ['6 месяцев на позиции OR 3 выполненных проекта', 'Прошел тест по базовым алгоритмам', 'Положительная оценка от наставника']
+      },
+      {
+        id: 'middle', title: 'Middle Developer', level: 'Средняя', tags: ['Автономность','Архитектура'],
+        responsibilities: ['Разрабатывает фичи среднего уровня', 'Помогает младшим коллегам', 'Проводит код-ревью'],
+        criteria: ['12 месяцев опыта или 5 успешных релизов', 'Умение проектировать компоненты', 'Хорошие оценки по продуктивности']
+      },
+      {
+        id: 'senior', title: 'Senior Developer', level: 'Продвинутая', tags: ['Лидство','Оптимизация'],
+        responsibilities: ['Оптимизирует архитектуру', 'Ведет сложные задачи', 'Принимает технические решения'],
+        criteria: ['Ведение проекта в роли тим-лида', 'Менторство над 3+ сотрудниками', 'Вклад в стратегию команды']
+      },
+      {
+        id: 'lead', title: 'Tech Lead', level: 'Лидер', tags: ['Стратегия','Руководство'],
+        responsibilities: ['Руководит техническим направлением', 'Принимает архитектурные решения','Координирует несколько команд'],
+        criteria: ['Успешные проекты под руководством', 'Навыки коммуникации и управления', 'Высокая оценка стейкхолдеров']
+      },
+      {
+        id: 'manager', title: 'Engineering Manager', level: 'Менеджер', tags: ['HR','Бюджетирование'],
+        responsibilities: ['Управление командой','Ресурсы и планирование','Развитие сотрудников'],
+        criteria: ['Опыт управления командой', 'Умение проводить performance review', 'Навыки найма и бюджетирования']
+      }
+    ];
+
+    const stepsEl = document.getElementById('steps');
+    const nameEl = document.getElementById('position-name');
+    const levelEl = document.getElementById('position-level');
+    const tagsEl = document.getElementById('tags');
+    const respEl = document.getElementById('responsibilities');
+    const critEl = document.getElementById('criteria');
+    const statusEl = document.getElementById('position-status');
+    const progBar = document.getElementById('progress-bar');
+    const progPct = document.getElementById('progress-percent');
+    const modal = document.getElementById('modal');
+    const modalBody = document.getElementById('modal-body');
+
+    let activeId = positions[0].id;
+
+    function renderSteps(){
+      stepsEl.innerHTML = '';
+      positions.forEach((p, idx) =>{
+        const step = document.createElement('div');
+        step.className = 'step' + (p.id===activeId? ' active':'');
+        step.setAttribute('role','button');
+        step.setAttribute('tabindex','0');
+        step.innerHTML = `
+          <div class="avatar">${p.title.split(' ').map(w=>w[0]).slice(0,2).join('')}</div>
+          <div class="meta">
+            <div class="title">${p.title}</div>
+            <div class="subtitle">${p.level}</div>
+          </div>
+          <div class="badge">${idx+1}</div>
+        `;
+        step.addEventListener('click', ()=>select(p.id));
+        step.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') select(p.id); });
+        stepsEl.appendChild(step);
+      });
+    }
+
+    function select(id){
+      activeId = id;
+      const p = positions.find(x=>x.id===id);
+      renderSteps();
+
+      nameEl.textContent = p.title;
+      levelEl.textContent = p.level;
+      statusEl.textContent = 'Текущая позиция';
+
+      tagsEl.innerHTML = '';
+      p.tags.forEach(t=>{const c=document.createElement('div');c.className='chip';c.textContent=t;tagsEl.appendChild(c)});
+
+      respEl.innerHTML = '';
+      p.responsibilities.forEach(r=>{const li=document.createElement('li');li.textContent=r;respEl.appendChild(li)});
+
+      critEl.innerHTML = '';
+      p.criteria.forEach(c=>{const li=document.createElement('li');li.textContent=c;critEl.appendChild(li)});
+
+      // mock progress based on position index
+      const idx = positions.findIndex(x=>x.id===id);
+      const percent = Math.round((idx/ (positions.length-1))*30 + 40); // visual mapping
+      progBar.style.width = percent + '%';
+      progPct.textContent = percent + '%';
+    }
+
+    // modal full plan
+    function openModal(){
+      modal.classList.add('open');
+      modalBody.innerHTML = '';
+      positions.forEach((p, i)=>{
+        const wrap = document.createElement('div');
+        wrap.style.padding='12px';wrap.style.borderBottom='1px solid rgba(255,255,255,0.02)';
+        wrap.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+            <div>
+              <div style="font-weight:700">${i+1}. ${p.title}</div>
+              <div style="color:var(--muted);font-size:13px">${p.level}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:13px;color:var(--muted)">Ключевые обязанности</div>
+              <div style="font-size:13px">${p.responsibilities.slice(0,2).join(', ')}${p.responsibilities.length>2? '...' : ''}</div>
+            </div>
+          </div>
+          <div style="margin-top:8px;color:var(--muted);font-size:13px"><strong>Условия перехода:</strong> ${p.criteria.join('; ')}</div>
+        `;
+        modalBody.appendChild(wrap);
+      });
+    }
+
+    document.getElementById('open-modal').addEventListener('click', openModal);
+    document.getElementById('close-modal').addEventListener('click', ()=>modal.classList.remove('open'));
+    modal.addEventListener('click',(e)=>{ if(e.target===modal) modal.classList.remove('open'); });
+
+    // simulate progression: increment progress
+    document.getElementById('simulate').addEventListener('click', ()=>{
+      const idx = positions.findIndex(x=>x.id===activeId);
+      let cur = parseInt(progBar.style.width) || 0;
+      cur = Math.min(100, cur + Math.round(10 + Math.random()*20));
+      progBar.style.width = cur + '%';
+      progPct.textContent = cur + '%';
+
+      // if progress reaches 100, auto-advance to next if exists
+      if(cur >= 85 && idx < positions.length -1){
+        const next = positions[idx+1];
+        setTimeout(()=>{
+          select(next.id);
+          // small celebratory effect
+          flashBadge(idx+1);
+        }, 500);
+      }
+    });
+
+    function flashBadge(index){
+      const badges = document.querySelectorAll('.step .badge');
+      if(badges[index]){
+        badges[index].style.transition='transform .36s ease, background .36s';
+        badges[index].style.transform='scale(1.2)';
+        setTimeout(()=>{badges[index].style.transform='';},600);
+      }
+    }
+
+    // initial render
+    renderSteps();
+    select(activeId);
+
+    // accessibility: keyboard shortcuts
+    document.addEventListener('keydown',(e)=>{
+      const idx = positions.findIndex(x=>x.id===activeId);
+      if(e.key==='ArrowRight' && idx < positions.length-1) select(positions[idx+1].id);
+      if(e.key==='ArrowLeft' && idx > 0) select(positions[idx-1].id);
+    });
+  </script>
+</body>
+</html>
